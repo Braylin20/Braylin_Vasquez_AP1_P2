@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Braylin_Vasquez_AP1_P2.Clie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{4393DE54-4FC1-4A68-9017-ACD4097411D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Braylin_Vasquez_AP1_P2.API", "..\Braylin_Vasquez_AP1_P2.API\Braylin_Vasquez_AP1_P2.API.csproj", "{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4393DE54-4FC1-4A68-9017-ACD4097411D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4393DE54-4FC1-4A68-9017-ACD4097411D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4393DE54-4FC1-4A68-9017-ACD4097411D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
