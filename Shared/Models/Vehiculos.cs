@@ -23,6 +23,6 @@ namespace Shared.Models
         public double Gastos { get; set; }
 
         [ForeignKey("VehiculoId")]
-        public ICollection<VehiculosDetalle?> VehiculosDetalles = new List<VehiculosDetalle?>();
+        public ICollection<VehiculosDetalle> VehiculosDetalles = new List<VehiculosDetalle>();
     }
 }

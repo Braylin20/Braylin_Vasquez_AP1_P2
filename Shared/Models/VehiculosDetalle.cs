@@ -12,9 +12,9 @@ namespace Shared.Models
     {
         [Key]
         public int DetalleId { get; set; }
-        [ForeignKey("Vehiculos")]
+       
         public int VehiculoId { get;  set; }
-        [ForeignKey("Accesorios")]
+       
         public int AccesorioId { get; set; }
         [Required(ErrorMessage ="Este campo es requerido")]
         public double Valor { get; set; }

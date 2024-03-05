@@ -12,7 +12,8 @@
     </div>
     <div class="card-footer">
         <div class="btn-group">
-            <button class="btn btn-danger bi bi-trash-fill">Eliminar</button>
+            <a href="Index" class="btn btn-primary bi bi-arrow-left-square-fill">Atr&aacute;s</a>
+            <button class="btn btn-danger bi bi-trash-fill" @onclick="Eliminar">Eliminar</button>
         </div>
     </div>
 </div>
@@ -24,5 +25,10 @@
     protected async override Task OnInitializedAsync()
     {
         Vehiculo = (await httClient.GetFromJsonAsync<Vehiculos>($"api/vehiculos/{VehiculoId}"))!;
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await httClient.DeleteFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}");
     }
 }
