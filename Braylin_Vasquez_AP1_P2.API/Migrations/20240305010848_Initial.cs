@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Braylin_Vasquez_AP1_P2.API.Migrations
 {
     /// <inheritdoc />
@@ -32,6 +34,7 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Descripcion = table.Column<string>(type: "TEXT", nullable: false),
                     Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Costo = table.Column<double>(type: "REAL", nullable: false),
                     Gastos = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
@@ -52,6 +55,16 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VehiculosDetalle", x => x.DetalleId);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Accesorios",
+                columns: new[] { "AccesoriosId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Camara Trasera" },
+                    { 2, "Pantalla Inferior" },
+                    { 3, "Interior Trasera" }
                 });
         }
 

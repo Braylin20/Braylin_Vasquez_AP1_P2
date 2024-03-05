@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Braylin_Vasquez_AP1_P2.API.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240304231541_AgregandoDatos")]
-    partial class AgregandoDatos
+    [Migration("20240305010848_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,23 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                     b.HasKey("AccesoriosId");
 
                     b.ToTable("Accesorios");
+
+                    b.HasData(
+                        new
+                        {
+                            AccesoriosId = 1,
+                            Descripcion = "Camara Trasera"
+                        },
+                        new
+                        {
+                            AccesoriosId = 2,
+                            Descripcion = "Pantalla Inferior"
+                        },
+                        new
+                        {
+                            AccesoriosId = 3,
+                            Descripcion = "Interior Trasera"
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Vehiculos", b =>

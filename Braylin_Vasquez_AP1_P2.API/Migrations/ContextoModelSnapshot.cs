@@ -29,6 +29,23 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                     b.HasKey("AccesoriosId");
 
                     b.ToTable("Accesorios");
+
+                    b.HasData(
+                        new
+                        {
+                            AccesoriosId = 1,
+                            Descripcion = "Camara Trasera"
+                        },
+                        new
+                        {
+                            AccesoriosId = 2,
+                            Descripcion = "Pantalla Inferior"
+                        },
+                        new
+                        {
+                            AccesoriosId = 3,
+                            Descripcion = "Interior Trasera"
+                        });
                 });
 
             modelBuilder.Entity("Shared.Models.Vehiculos", b =>
