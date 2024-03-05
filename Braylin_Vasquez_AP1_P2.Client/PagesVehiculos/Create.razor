@@ -11,21 +11,25 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <label>Fecha</label>
                     <InputDate @bind-Value=Vehiculo.Fecha class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Fecha)" />
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <label>Costo</label>
                     <InputNumber @bind-Value=Vehiculo.Costo class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Costo)" />
+                </div>
+                <div class="col-4">
+                    <label>Gastos</label>
+                    <InputNumber @bind-Value="Vehiculo.Gastos"  class="form-control" readonly />
                 </div>
             </div>
             <div class="row mb-4">
                 <div>
                     <label>Descripci&oacute;n</label>
-                    <InputTextArea @bind-Value=Vehiculo.Descripcion class="form-control" />
+                    <InputText @bind-Value=Vehiculo.Descripcion class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Descripcion)" />
                 </div>
             </div>
@@ -51,7 +55,7 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Valor</label>
-                        <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control" />
+                        <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control" @oninput="Ocultar"/>
                     </div>
                 </div>
                 @if (Mensaje != null)
@@ -123,6 +127,11 @@
         Vehiculo = new Vehiculos();
         VehiculoDetalle = new VehiculosDetalle();
     }
+    public void Ocultar()
+    {
+        Mensaje = string.Empty;
+    }
+
     public async Task AgregarDetalle()
     {
         if(VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor ==0)
@@ -130,10 +139,15 @@
             Mensaje = "Debe llenar los campos del detalle";
             return;
         }
-        Console.WriteLine("El Vehiculo id es" + ListaVehiculos.Count);
-        Vehiculo.VehiculosDetalle.Add(VehiculoDetalle);
-        VehiculoDetalle = new VehiculosDetalle();
-        StateHasChanged();
+        else
+        {
+            Vehiculo.VehiculosDetalle.Add(VehiculoDetalle);
+            Vehiculo.Gastos += VehiculoDetalle.Valor;
+            VehiculoDetalle = new VehiculosDetalle();
+            StateHasChanged();
+        }
+
+        
     }
     
 
