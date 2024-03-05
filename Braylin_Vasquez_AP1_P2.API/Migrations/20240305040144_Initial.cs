@@ -55,6 +55,12 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VehiculosDetalle", x => x.DetalleId);
+                    table.ForeignKey(
+                        name: "FK_VehiculosDetalle_Vehiculos_VehiculoId",
+                        column: x => x.VehiculoId,
+                        principalTable: "Vehiculos",
+                        principalColumn: "VehiculoId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -66,6 +72,11 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                     { 2, "Pantalla Inferior" },
                     { 3, "Interior Trasera" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VehiculosDetalle_VehiculoId",
+                table: "VehiculosDetalle",
+                column: "VehiculoId");
         }
 
         /// <inheritdoc />
@@ -75,10 +86,10 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
                 name: "Accesorios");
 
             migrationBuilder.DropTable(
-                name: "Vehiculos");
+                name: "VehiculosDetalle");
 
             migrationBuilder.DropTable(
-                name: "VehiculosDetalle");
+                name: "Vehiculos");
         }
     }
 }

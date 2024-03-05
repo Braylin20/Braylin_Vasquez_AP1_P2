@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Braylin_Vasquez_AP1_P2.API.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240305010848_Initial")]
+    [Migration("20240305040144_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -93,7 +93,23 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
 
                     b.HasKey("DetalleId");
 
+                    b.HasIndex("VehiculoId");
+
                     b.ToTable("VehiculosDetalle");
+                });
+
+            modelBuilder.Entity("Shared.Models.VehiculosDetalle", b =>
+                {
+                    b.HasOne("Shared.Models.Vehiculos", null)
+                        .WithMany("VehiculosDetalle")
+                        .HasForeignKey("VehiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shared.Models.Vehiculos", b =>
+                {
+                    b.Navigation("VehiculosDetalle");
                 });
 #pragma warning restore 612, 618
         }
