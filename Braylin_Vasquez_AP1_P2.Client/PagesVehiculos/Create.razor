@@ -6,7 +6,7 @@
 
     <div class="card shadow-lg">
         <div class="card-header">
-            <h3>Registro Vehiculo</h3>
+            <h3>Registro Veh&iacute;culo</h3>
         </div>
 
         <div class="card-body">
@@ -42,10 +42,11 @@
                         <label>Accesorio</label>
                         <div class="input-group">
                             <InputSelect @bind-Value="VehiculoDetalle.AccesorioId" class="form-select">
-                                <option value="">Seleccione un vehiculo</option>
+                                <option value="">Seleccione un veh&iacute;culo</option>
                                 @foreach (var item in ListaAccesorios)
                                 {
                                     <option value="@item.AccesoriosId">@item.Descripcion</option>
+                                    
                                 }
                             </InputSelect>
                             <button type="button" class="btn btn-success bi-floppy-fill" @onclick="AgregarDetalle">Agregar</button>
@@ -67,6 +68,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>AccesorioId</th>
                                 <th>Valor</th>
                                 
                             </tr>
@@ -75,14 +77,21 @@
                             @foreach (var item in Vehiculo.VehiculosDetalle)
                             {
                                 <tr>
+                                    <td>@item.AccesorioId</td>
                                     <td>@item.Valor</td>
-                                    
+                                    <td>
+                                        <button type="button" class="btn btn-danger bi bi-trash-fill" @onclick="@(()=> RemoverDetalle(item))" />
+                                    </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
+            @if(MensajeGuardado!= null)
+            {
+                <p class="text-success">@Mensaje</p>
+            }
         </div>
         
         <div class="card-footer">
@@ -100,7 +109,7 @@
     public List<Vehiculos> ListaVehiculos = new List<Vehiculos>();
     public List<Accesorios> ListaAccesorios = new List<Accesorios>();
     public string Mensaje = string.Empty;
-
+    public string MensajeGuardado = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,33 +119,24 @@
     }
     public async Task Guardar()
     {
-
         var vehiculoGuardado = await httpClient.PostAsJsonAsync("api/vehiculos", Vehiculo);
         if (!vehiculoGuardado.IsSuccessStatusCode)
         {
             return;
         }
-        Console.WriteLine("Id" + VehiculoDetalle.VehiculoId);
-        Nuevo();
-        StateHasChanged();
-
-
-    }
-    public void Nuevo()
-    {
-        Vehiculo = new Vehiculos();
-        VehiculoDetalle = new VehiculosDetalle();
-    }
-    public void Ocultar()
-    {
-        Mensaje = string.Empty;
+        else
+        {
+            Nuevo();
+            StateHasChanged();
+            MensajeGuardado = "Guardado correctamente";
+        }
     }
 
     public async Task AgregarDetalle()
     {
-        if(VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor ==0)
+        if(VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor <=0)
         {
-            Mensaje = "Debe llenar los campos del detalle";
+            Mensaje = "Debe llenar los campos del detalle o está agregando valores negativos";
             return;
         }
         else
@@ -145,10 +145,29 @@
             Vehiculo.Gastos += VehiculoDetalle.Valor;
             VehiculoDetalle = new VehiculosDetalle();
             StateHasChanged();
-        }
-
-        
+        }   
     }
-    
+
+    public async Task RemoverDetalle(VehiculosDetalle detalle)
+    {
+        var detalleEncontrado = Vehiculo.VehiculosDetalle.FirstOrDefault(v => v.DetalleId == detalle.DetalleId);
+        if (detalleEncontrado != null)
+        {
+            Vehiculo.VehiculosDetalle.Remove(detalle);
+            Vehiculo.Gastos -= detalle.Valor;
+        }
+    }
+
+    public void Nuevo()
+    {
+        Vehiculo = new Vehiculos();
+        VehiculoDetalle = new VehiculosDetalle();
+        Vehiculo.Fecha = DateTime.Now;
+    }
+
+    public void Ocultar()
+    {
+        Mensaje = string.Empty;
+    }
 
 }
