@@ -17,6 +17,9 @@ namespace Shared.Models
         [Required(ErrorMessage = "Este campo es requrido")]
         public DateTime? Fecha { get; set; }
         [Required(ErrorMessage = "Este campo es requrido")]
+        [Range(0.001, 1000000000 ,ErrorMessage ="El rango debe estar entra 0.001 a 1000000000")]
+        public double Costo { get; set; }
+        [Required(ErrorMessage = "Este campo es requrido")]
         public double Gastos { get; set; }
 
         [ForeignKey("VehiculoId")]

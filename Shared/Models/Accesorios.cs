@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace Shared.Models
         [Key]
         public int AccesoriosId { get; set; }
         public string? Descripcion { get; set; }
+
+
+        
     }
 }
