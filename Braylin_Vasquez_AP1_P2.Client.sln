@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Braylin_Vasquez_AP1_P2.Client", "Braylin_Vasquez_AP1_P2.Client.csproj", "{861E7575-D965-49DB-BAA5-A9DB84F4F25C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Braylin_Vasquez_AP1_P2.Client", "Braylin_Vasquez_AP1_P2.Client.csproj", "{861E7575-D965-49DB-BAA5-A9DB84F4F25C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.csproj", "{4393DE54-4FC1-4A68-9017-ACD4097411D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{4393DE54-4FC1-4A68-9017-ACD4097411D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Braylin_Vasquez_AP1_P2.API", "..\Braylin_Vasquez_AP1_P2.API\Braylin_Vasquez_AP1_P2.API.csproj", "{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Braylin_Vasquez_AP1_P2.API", "..\Braylin_Vasquez_AP1_P2.API\Braylin_Vasquez_AP1_P2.API.csproj", "{BF5E4DA4-7A96-4B3E-B25C-C8A02BAD42BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
