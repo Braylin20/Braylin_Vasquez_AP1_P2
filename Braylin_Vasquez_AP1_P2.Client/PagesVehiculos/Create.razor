@@ -1,0 +1,114 @@
+﻿@page "/Create"
+@inject HttpClient httpClient
+
+<EditForm Model="Vehiculo" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator/>
+
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <h3>Registro Vehiculo</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value=Vehiculo.Fecha class="form-control" />
+                    <ValidationMessage For="@(()=> Vehiculo.Fecha)" />
+                </div>
+                <div class="col-6">
+                    <label>Costo</label>
+                    <InputNumber @bind-Value=Vehiculo.Costo class="form-control" />
+                    <ValidationMessage For="@(()=> Vehiculo.Costo)" />
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div>
+                    <label>Descripci&oacute;n</label>
+                    <InputTextArea @bind-Value=Vehiculo.Descripcion class="form-control" />
+                    <ValidationMessage For="@(()=> Vehiculo.Descripcion)" />
+                </div>
+            </div>
+        </div>
+        <div class="card-body border border-success">
+            <div>
+                <h3>Registro Detalle</h3>
+            </div>
+            <div class="row">
+                
+                <div class="col-3">
+                    
+                    <label>Vehiculo</label>
+                    <InputSelect @bind-Value="Vehiculo.VehiculoId" class="form-select">
+                        <option value="">Seleccione un vehiculo</option>
+                        @foreach (var item in ListaVehiculos)
+                        {
+                            <option value="@item.VehiculoId">@item.Descripcion</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-md-3 ">
+                    <label>Accesorios</label>
+                    <div class="input-group">
+                        <InputSelect @bind-Value="Vehiculo.VehiculoId" class="form-select">
+                            <option value="">Seleccione un vehiculo</option>
+                            @foreach (var item in ListaAccesorios)
+                            {
+                                <option value="@item.AccesoriosId">@item.Descripcion</option>
+                            }
+                        </InputSelect>
+                        <button type="button" class="btn btn-success" @onclick="AgregarDetalle">Agregar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="valor">
+                <div class="col-6">
+                    <label>Vehiculo</label>
+                    <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a href="Index" class="btn btn-primary">Atr&aacute;s</a>
+                <button type="submit" class="btn btn-success">Crear</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    public Vehiculos Vehiculo = new Vehiculos();
+    public VehiculosDetalle VehiculoDetalle = new VehiculosDetalle();
+    public List<Vehiculos> ListaVehiculos = new List<Vehiculos>();
+    public List<Accesorios> ListaAccesorios = new List<Accesorios>();
+    public string Mensaje = string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaAccesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("api/Accesorios"))!;
+        ListaVehiculos = (await httpClient.GetFromJsonAsync<List<Vehiculos>>("api/Vehiculos"))!;
+        Vehiculo.Fecha = DateTime.Now;
+    }
+    public async Task Guardar()
+    {
+        var vehiculoGuardado = await httpClient.PostAsJsonAsync("api/vehiculos", Vehiculo);
+        if (!vehiculoGuardado.IsSuccessStatusCode)
+        {
+            return;
+        }
+        StateHasChanged();
+    }
+
+    public async Task AgregarDetalle()
+    {
+        var detalleNuevo = new VehiculosDetalle()
+        {
+            Valor = VehiculoDetalle.Valor
+        };
+
+    }
+    
+
+}
