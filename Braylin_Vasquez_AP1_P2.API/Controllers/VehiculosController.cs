@@ -25,7 +25,10 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehiculos>>> GetVehiculos()
         {
-            return await _context.Vehiculos.Include(v=> v.VehiculosDetalles).ToListAsync();
+            return await _context.Vehiculos
+                .Include(v=> v.VehiculosDetalles)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         // GET: api/Vehiculos/5
