@@ -137,6 +137,11 @@
 
     public async Task AgregarDetalle()
     {
+        if (Validar())
+        {
+            Mensaje = "Ya existe un detalle igual";
+            return;
+        }
         if (VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor <= 0)
         {
             Mensaje = "Debe llenar los campos del detalle o está agregando valores negativos";
@@ -150,7 +155,11 @@
             StateHasChanged();
         }
     }
-
+    public bool Validar()
+    {
+        return Vehiculo.VehiculosDetalle
+        .Any(v => v.AccesorioId == VehiculoDetalle.AccesorioId);
+    }
     public async Task RemoverDetalle(VehiculosDetalle detalle)
     {
         var detalleEncontrado = Vehiculo.VehiculosDetalle.FirstOrDefault(v => v.DetalleId == detalle.DetalleId);
