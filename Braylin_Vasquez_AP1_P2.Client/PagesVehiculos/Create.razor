@@ -118,7 +118,7 @@
         var vehiculoGuardado = await httpClient.PostAsJsonAsync("api/vehiculos", Vehiculo);
         if (!vehiculoGuardado.IsSuccessStatusCode)
         {
-            
+
             return;
         }
         else
@@ -128,9 +128,18 @@
             MensajeGuardado = "Guardado correctamente";
         }
     }
-
+    public bool Validar()
+    {
+        return Vehiculo.VehiculosDetalle
+        .Any(v => v.AccesorioId == VehiculoDetalle.AccesorioId);
+    }
     public async Task AgregarDetalle()
     {
+        if (Validar())
+        {
+            Mensaje = "Ya existe un detalle igual";
+            return;
+        }
         if(VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor <=0)
         {
             Mensaje = "Debe llenar los campos del detalle o está agregando valores negativos";
