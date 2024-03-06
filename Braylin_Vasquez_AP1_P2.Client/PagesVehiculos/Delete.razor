@@ -1,14 +1,18 @@
 ﻿@page "/Delete/{VehiculoId:int}"
-@inject HttpClient httClient
+@inject HttpClient httpClient
 <div class="card shadow-lg">
     <div class="card-header">
         <h3 class="text-danger"> ¿Seguro que quieres eliminar este vehiculo?</h3>
     </div>
     <div class="card-body">
-        <p> VehiculocId: @Vehiculo.VehiculoId</p>
+        <p> Veh&iacute;culoId: @Vehiculo.VehiculoId</p>
         <p> Fecha: @Vehiculo.Fecha</p>
-        <p> Descripcion: @Vehiculo.Descripcion</p>
+        <p> Descripci&oacute;n: @Vehiculo.Descripcion</p>
         <p> Costo: @Vehiculo.Costo</p>
+        @if(Mensaje != null)
+        {
+            <p class="text-danger">@Mensaje</p>
+        }
     </div>
     <div class="card-footer">
         <div class="btn-group">
@@ -20,15 +24,27 @@
 @code {
     [Parameter]
     public int VehiculoId { get; set; }
-    public Vehiculos Vehiculo = new Vehiculos();
+    public Vehiculos Vehiculo{ get; set; } = new Vehiculos();
+    public string Mensaje = string.Empty;
 
     protected async override Task OnInitializedAsync()
     {
-        Vehiculo = (await httClient.GetFromJsonAsync<Vehiculos>($"api/vehiculos/{VehiculoId}"))!;
+        Vehiculo = (await httpClient.GetFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}"))!;
     }
 
     public async Task Eliminar()
     {
-        var eliminado = await httClient.DeleteFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}");
+        var eliminado = await httpClient.DeleteAsync($"api/Vehiculos/{VehiculoId}");
+        if (!eliminado.IsSuccessStatusCode)
+        {
+            return;
+        }
+        else
+        {
+            Mensaje = "Eliminado correctamente";
+            Vehiculo = new Vehiculos();
+            StateHasChanged();
+        }
+        
     }
 }
