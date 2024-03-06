@@ -2,17 +2,39 @@
 @inject HttpClient httClient
 <div class="card shadow-lg">
     <div class="card-header">
-        <h3 class="text-danger"> ¿Seguro que quieres eliminar este vehiculo?</h3>
+        <h3> Informaci&oacute;n del vehiculo</h3>
     </div>
     <div class="card-body">
-        <p> VehiculocId: @Vehiculo.VehiculoId</p>
+        <p> Vehiculo Id: @Vehiculo.VehiculoId</p>
         <p> Fecha: @Vehiculo.Fecha</p>
         <p> Descripcion: @Vehiculo.Descripcion</p>
         <p> Costo: @Vehiculo.Costo</p>
+        <p> Gastos: @Vehiculo.Gastos</p>
+        <hr clas="border-bottom" />
+        <div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>AccesorioId</th>
+                        <th>Valor</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Vehiculo.VehiculosDetalle)
+                    {
+                        <tr>
+                            <td>@item.AccesorioId</td>
+                            <td>@item.Valor</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="card-footer">
         <div class="btn-group">
-            <button class="btn btn-danger bi bi-trash-fill">Eliminar</button>
+            <a href="/Index" class="btn btn-primary bi bi-arrow-left-square-fill">Atr&aacute;s</a>
         </div>
     </div>
 </div>
