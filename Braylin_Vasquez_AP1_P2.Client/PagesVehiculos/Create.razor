@@ -6,68 +6,90 @@
 
     <div class="card shadow-lg">
         <div class="card-header">
-            <h3>Registro Vehiculo</h3>
+            <h3>Registro Veh&iacute;culo</h3>
         </div>
 
         <div class="card-body">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <label>Fecha</label>
                     <InputDate @bind-Value=Vehiculo.Fecha class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Fecha)" />
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <label>Costo</label>
                     <InputNumber @bind-Value=Vehiculo.Costo class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Costo)" />
+                </div>
+                <div class="col-4">
+                    <label>Gastos</label>
+                    <InputNumber @bind-Value="Vehiculo.Gastos"  class="form-control" readonly />
                 </div>
             </div>
             <div class="row mb-4">
                 <div>
                     <label>Descripci&oacute;n</label>
-                    <InputTextArea @bind-Value=Vehiculo.Descripcion class="form-control" />
+                    <InputText @bind-Value=Vehiculo.Descripcion class="form-control" />
                     <ValidationMessage For="@(()=> Vehiculo.Descripcion)" />
                 </div>
             </div>
-        </div>
-        <div class="card-body border border-success">
-            <div>
-                <h3>Registro Detalle</h3>
-            </div>
-            <div class="row">
-                
-                <div class="col-3">
-                    
-                    <label>Vehiculo</label>
-                    <InputSelect @bind-Value="Vehiculo.VehiculoId" class="form-select">
-                        <option value="">Seleccione un vehiculo</option>
-                        @foreach (var item in ListaVehiculos)
-                        {
-                            <option value="@item.VehiculoId">@item.Descripcion</option>
-                        }
-                    </InputSelect>
+            <div class="card-body border border-success">
+                <div>
+                    <h3>Registro Detalle</h3>
                 </div>
-                <div class="col-md-3 ">
-                    <label>Accesorios</label>
-                    <div class="input-group">
-                        <InputSelect @bind-Value="Vehiculo.VehiculoId" class="form-select">
-                            <option value="">Seleccione un vehiculo</option>
-                            @foreach (var item in ListaAccesorios)
-                            {
-                                <option value="@item.AccesoriosId">@item.Descripcion</option>
-                            }
-                        </InputSelect>
-                        <button type="button" class="btn btn-success bi-floppy-fill" @onclick="AgregarDetalle">Agregar</button>
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <label>Accesorio</label>
+                        <div class="input-group">
+                            <InputSelect @bind-Value="VehiculoDetalle.AccesorioId" class="form-select">
+                                <option value="">Seleccione un veh&iacute;culo</option>
+                                @foreach (var item in ListaAccesorios)
+                                {
+                                    <option value="@item.AccesoriosId">@item.Descripcion</option>
+                                    
+                                }
+                            </InputSelect>
+                            <button type="button" class="btn btn-success bi-floppy-fill" @onclick="AgregarDetalle">Agregar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="valor">
-                <div class="col-6">
-                    <label>Vehiculo</label>
-                    <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control"/>
+                <div class="row">
+                    <div class="col-6">
+                        <label>Valor</label>
+                        <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control" @oninput="Ocultar"/>
+                    </div>
+                </div>
+                @if (MensajeGuardado != null)
+                {
+                    <p class="text-danger">@Mensaje</p>
+                }
+                <hr clas="border-bottom" />
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>AccesorioId</th>
+                                <th>Valor</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Vehiculo.VehiculosDetalle)
+                            {
+                                <tr>
+                                    <td>@item.AccesorioId</td>
+                                    <td>@item.Valor</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger bi bi-trash-fill" @onclick="@(()=> RemoverDetalle(item))" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        
         <div class="card-footer">
             <div class="btn-group">
                 <a href="Index" class="btn btn-primary bi bi-arrow-left-square-fill">Atr&aacute;s</a>
@@ -83,7 +105,7 @@
     public List<Vehiculos> ListaVehiculos = new List<Vehiculos>();
     public List<Accesorios> ListaAccesorios = new List<Accesorios>();
     public string Mensaje = string.Empty;
-
+    public string MensajeGuardado = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,19 +118,62 @@
         var vehiculoGuardado = await httpClient.PostAsJsonAsync("api/vehiculos", Vehiculo);
         if (!vehiculoGuardado.IsSuccessStatusCode)
         {
+
             return;
         }
-        StateHasChanged();
+        else
+        {
+            Nuevo();
+            StateHasChanged();
+            MensajeGuardado = "Guardado correctamente";
+        }
     }
-
+    public bool Validar()
+    {
+        return Vehiculo.VehiculosDetalle
+        .Any(v => v.AccesorioId == VehiculoDetalle.AccesorioId);
+    }
     public async Task AgregarDetalle()
     {
-        var detalleNuevo = new VehiculosDetalle()
+        if (Validar())
         {
-            Valor = VehiculoDetalle.Valor
-        };
-
+            Mensaje = "Ya existe un detalle igual";
+            return;
+        }
+        if(VehiculoDetalle.AccesorioId == 0 || VehiculoDetalle.Valor <=0)
+        {
+            Mensaje = "Debe llenar los campos del detalle o está agregando valores negativos";
+            return;
+        }
+        else
+        {
+            Vehiculo.VehiculosDetalle.Add(VehiculoDetalle);
+            Vehiculo.Gastos += VehiculoDetalle.Valor;
+            VehiculoDetalle = new VehiculosDetalle();
+            StateHasChanged();
+        }   
     }
-    
+
+    public async Task RemoverDetalle(VehiculosDetalle detalle)
+    {
+        var detalleEncontrado = Vehiculo.VehiculosDetalle.FirstOrDefault(v => v.DetalleId == detalle.DetalleId);
+        if (detalleEncontrado != null)
+        {
+            Vehiculo.VehiculosDetalle.Remove(detalle);
+            Vehiculo.Gastos -= detalle.Valor;
+        }
+    }
+
+    public void Nuevo()
+    {
+        Vehiculo = new Vehiculos();
+        VehiculoDetalle = new VehiculosDetalle();
+        Vehiculo.Fecha = DateTime.Now;
+    }
+
+    public void Ocultar()
+    {
+        Mensaje = string.Empty;
+    }
 
 }

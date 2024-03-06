@@ -25,10 +25,7 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehiculos>>> GetVehiculos()
         {
-            return await _context.Vehiculos
-                .Include(v=> v.VehiculosDetalles)
-                .AsNoTracking()
-                .ToListAsync();
+            return await _context.Vehiculos.Include(v=> v.VehiculosDetalle).ToListAsync();
         }
 
         // GET: api/Vehiculos/5
@@ -36,8 +33,8 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
         public async Task<ActionResult<Vehiculos>> GetVehiculos(int id)
         {
             var vehiculos = await _context.Vehiculos
-                .Include(v => v.VehiculoId == id)
-                .FirstOrDefaultAsync();
+                .Include(v => v.VehiculosDetalle)
+                .FirstOrDefaultAsync(v=> v.VehiculoId ==id);
 
             if (vehiculos == null)
             {
@@ -56,7 +53,11 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
             {
                 return BadRequest();
             }
-
+            await _context.VehiculosDetalle.Where(v => v.VehiculoId == id).ExecuteDeleteAsync();
+            foreach (var item in vehiculos.VehiculosDetalle)
+            {
+                _context.VehiculosDetalle.Add(item);
+            }
             _context.Entry(vehiculos).State = EntityState.Modified;
 
             try

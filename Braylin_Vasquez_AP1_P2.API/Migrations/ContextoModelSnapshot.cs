@@ -90,7 +90,23 @@ namespace Braylin_Vasquez_AP1_P2.API.Migrations
 
                     b.HasKey("DetalleId");
 
+                    b.HasIndex("VehiculoId");
+
                     b.ToTable("VehiculosDetalle");
+                });
+
+            modelBuilder.Entity("Shared.Models.VehiculosDetalle", b =>
+                {
+                    b.HasOne("Shared.Models.Vehiculos", null)
+                        .WithMany("VehiculosDetalle")
+                        .HasForeignKey("VehiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shared.Models.Vehiculos", b =>
+                {
+                    b.Navigation("VehiculosDetalle");
                 });
 #pragma warning restore 612, 618
         }
