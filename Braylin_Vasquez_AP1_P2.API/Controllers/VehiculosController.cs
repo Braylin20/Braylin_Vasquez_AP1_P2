@@ -33,8 +33,8 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
         public async Task<ActionResult<Vehiculos>> GetVehiculos(int id)
         {
             var vehiculos = await _context.Vehiculos
-                .Include(v => v.VehiculoId == id)
-                .FirstOrDefaultAsync();
+                .Include(v => v.VehiculosDetalle)
+                .FirstOrDefaultAsync(v=> v.VehiculoId ==id);
 
             if (vehiculos == null)
             {
