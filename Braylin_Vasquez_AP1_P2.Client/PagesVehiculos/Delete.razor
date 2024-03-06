@@ -9,6 +9,7 @@
         <p> Fecha: @Vehiculo.Fecha</p>
         <p> Descripci&oacute;n: @Vehiculo.Descripcion</p>
         <p> Costo: @Vehiculo.Costo</p>
+        <p> Gastos: @Vehiculo.Gastos</p>
         @if(Mensaje != null)
         {
             <p class="text-danger">@Mensaje</p>
@@ -45,6 +46,5 @@
             Vehiculo = new Vehiculos();
             StateHasChanged();
         }
-        
     }
 }
