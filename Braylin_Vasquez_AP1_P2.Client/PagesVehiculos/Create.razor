@@ -59,7 +59,7 @@
                         <InputNumber @bind-Value="VehiculoDetalle.Valor" class="form-control" @oninput="Ocultar"/>
                     </div>
                 </div>
-                @if (Mensaje != null)
+                @if (MensajeGuardado != null)
                 {
                     <p class="text-danger">@Mensaje</p>
                 }
@@ -88,7 +88,7 @@
                     </table>
                 </div>
             </div>
-            @if(MensajeGuardado!= null)
+            @if(Mensaje!= null)
             {
                 <p class="text-success">@Mensaje</p>
             }
@@ -122,6 +122,7 @@
         var vehiculoGuardado = await httpClient.PostAsJsonAsync("api/vehiculos", Vehiculo);
         if (!vehiculoGuardado.IsSuccessStatusCode)
         {
+            
             return;
         }
         else
