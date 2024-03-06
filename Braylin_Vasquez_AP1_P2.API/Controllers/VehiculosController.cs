@@ -53,7 +53,11 @@ namespace Braylin_Vasquez_AP1_P2.API.Controllers
             {
                 return BadRequest();
             }
-
+            await _context.VehiculosDetalle.Where(v => v.VehiculoId == id).ExecuteDeleteAsync();
+            foreach (var item in vehiculos.VehiculosDetalle)
+            {
+                _context.VehiculosDetalle.Add(item);
+            }
             _context.Entry(vehiculos).State = EntityState.Modified;
 
             try
